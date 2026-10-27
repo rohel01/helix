@@ -1099,6 +1099,29 @@ Returns a new rope value.
         );
 
         register_value!(
+            "char-width",
+            |c: char| crate::unicode::width::UnicodeWidthChar::width(c).unwrap_or(0),
+            r#"Get the number of terminal cells a character takes when Helix draws it:
+2 for wide characters such as CJK ideographs and most emoji, 0 for combining
+marks and control characters, 1 otherwise.
+
+```scheme
+(char-width char) -> int?
+```"#
+        );
+
+        register_value!(
+            "string-width",
+            |s: SteelString| crate::unicode::width::UnicodeWidthStr::width(s.as_str()),
+            r#"Get the number of terminal cells a string takes when Helix draws it,
+the sum of the widths of its characters.
+
+```scheme
+(string-width string) -> int?
+```"#
+        );
+
+        register_value!(
             "rope-starts-with?",
             SteelRopeSlice::starts_with,
             "Check if the rope starts with a given pattern"
